@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "workspaces": ["frontend", "server"],
+  "scripts": {
+    "all": "yarn workspace frontend build && yarn workspace server start"
+  }
+}
