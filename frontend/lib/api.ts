@@ -90,7 +90,7 @@ export async function getBarrio(barrio_id: string): Promise<Barrio> {
 }
 
 export async function postPaquetes(
-  paquetes: string,
+  paquetes: number,
   barrio_id: string
 ): Promise<void> {
   const result = (await fetch(`http://${apiHost}/api/paquetes/${barrio_id}`, {

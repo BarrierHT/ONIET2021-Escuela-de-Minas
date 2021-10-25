@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import MyAppBar from '@lib/components/MyAppBar';
 import LogIn from '@lib/components/LogIn';
 import Dashboard from '@lib/components/Dashboard';
+import Barrio from '@lib/components/Barrio';
 
 const App: React.FC = () => {
   return (
@@ -21,6 +22,9 @@ const App: React.FC = () => {
         <Switch>
           <Route path="/logIn">
             <LogIn />
+          </Route>
+          <Route path="/barrio/:id">
+            <Barrio />
           </Route>
           <Route path="/">
             <Dashboard />
