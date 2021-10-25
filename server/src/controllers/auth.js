@@ -73,21 +73,30 @@ exports.postGetUser = (req, res, next) => {
         .catch(err => next(err));
 };
 
-exports.getNeighborhood = (req, res, next) => {
+exports.getNeighborhood = async (req, res, next) => {
     //info barrio
     const { barrioId } = req.params;
+    console.log(barrioId);
 
-    const neighbourhood = req.neighbourhood.find(
+    let neighbourhood = req.neighbourhood.find(
         item => item.id_renabap == barrioId
     );
 
     if (!neighbourhood) {
         const err = errorHandler('id-not-valid', 422, {});
-        throw err;
-    } else res.status(200).json({ data: neighbourhood });
+        return Promise.reject(err);
+    } else {
+        neighbourhood.paquetes = await Neighborhood.findOne({
+            id_renabap: neighbourhood.id_renabap,
+        }).then(result => {
+            if (result) return result.paquetes;
+            else return 0;
+        });
+        res.status(200).json({ data: neighbourhood });
+    }
 };
 
-exports.filterNeighborhood = (req, res, next) => {
+exports.filterNeighborhood = async (req, res, next) => {
     //filter neighborhood
     const { provincia, departamento, localidad } = req.query;
     const quantityPerPage = 50;
@@ -104,6 +113,16 @@ exports.filterNeighborhood = (req, res, next) => {
         page * quantityPerPage,
         page * quantityPerPage + quantityPerPage
     );
+
+    for (item of req.neighbourhood) {
+        const packages = await Neighborhood.findOne({
+            id_renabap: item.id_renabap,
+        }).then(result => {
+            if (result) return result.paquetes;
+            else return 0;
+        });
+        item.packages = packages;
+    }
 
     res.status(200).json({ data: req.neighbourhood });
 };
@@ -145,9 +164,13 @@ exports.postStatistic = async (req, res, next) => {
     for (const item of req.neighbourhood) {
         if (item.cod_provincia == provincia && localidad == item.localidad) {
             totalFamilies += item.cantidad_familias_estimado;
+            // console.log(item.id_renabap);
             const packages = await Neighborhood.findOne({
                 id_renabap: item.id_renabap,
-            }).then(itemRecord => itemRecord.paquetes);
+            }).then(itemRecord => {
+                if (itemRecord) return itemRecord.paquetes;
+                else return 0;
+            });
             totalPackages += packages;
         }
     }
@@ -155,7 +178,34 @@ exports.postStatistic = async (req, res, next) => {
     res.status(200).json({ totalFamilies, totalPackages });
 };
 
-exports.getListedNeighborhood = (req, res, next) => {
-    //N barrios
-    res.status(200).json({ message: 'Packages added' });
+exports.postListedNeighborhood = async (req, res, next) => {
+    const { nBarrios } = req.body;
+
+    // console.log(nBarrios);
+
+    const result = await Neighborhood.find().then(
+        neighbourhood => neighbourhood
+    );
+    const resultFiltered = [];
+
+    for (const item of req.neighbourhood) {
+        const packages = result.find(
+            resultItem => resultItem.id_renabap == item.id_renabap
+        ).paquetes;
+        const proportion = item.cantidad_familias_estimado / packages;
+        resultFiltered.push({ proportion, barrioId: id_renabap, packages });
+    }
+    resultFiltered
+        .sort((a, b) => a.proportion - b.proportion)
+        .splice(0, nBarrios);
+    resultFiltered.slice(0, Math.floor(Math.random() * nBarrios));
+
+    req.neighbourhood.forEach(item => {
+        const packages = resultFiltered.find(
+            itemResult => itemResult.barrioId == item.id_renabap
+        ).packages;
+        item.packages = packages;
+    });
+
+    res.status(200).json({ data: req.neighbourhood });
 };

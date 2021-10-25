@@ -25,10 +25,9 @@ app.set('port', process.env.PORT || 5000);
 
 app.use(helmet());
 
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
-
 app.use(morgan('short'));
 
 app.use(
@@ -48,11 +47,11 @@ app.use(
     })
 );
 
-// app.use(csrf({ cookie: true }));
-// app.use((req, res, next) => {
-//     res.cookie('XSRF-TOKEN', req.csrfToken());
-//     next();
-// });
+app.use(csrf({ cookie: true }));
+app.use((req, res, next) => {
+    res.cookie('XSRF-TOKEN', req.csrfToken());
+    next();
+});
 
 app.use(express.static(path.join(__dirname, '..', '..', 'frontend', 'dist')));
 
