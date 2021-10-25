@@ -1,4 +1,8 @@
 # ONIET2021-Escuela-de-Minas
+**Participantes:**
+-   Facundo Romero [@BarrierHT](https://github.com/BarrierHT)
+-   Ernesto Ittig [@ernestoittig](https://github.com/ernestoittig)
+-   Nicolás Anachuri [@Nicolas1205](https://github.com/Nicolas1205)
 
 **Requisitos previos:**
 
