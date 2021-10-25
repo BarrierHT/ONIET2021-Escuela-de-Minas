@@ -18,3 +18,10 @@
 
 -   Luego, correr el comando 'yarn all', y esperar que se inicien los workspaces
 -   Una vez terminado, solamente entrar al navegador, url: http://localhost:5000
+
+Entrar con los usuarios:
+User: test1@gmail.com
+Contraseña: Cat111
+
+User: test2@gmail.com
+Contraseña: Cat222
