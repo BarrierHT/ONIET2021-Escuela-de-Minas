@@ -121,7 +121,7 @@ exports.filterNeighborhood = async (req, res, next) => {
             if (result) return result.paquetes;
             else return 0;
         });
-        item.packages = packages;
+        item.paquetes = packages;
     }
 
     res.status(200).json({ data: req.neighbourhood });
@@ -204,7 +204,7 @@ exports.postListedNeighborhood = async (req, res, next) => {
         const packages = resultFiltered.find(
             itemResult => itemResult.barrioId == item.id_renabap
         ).packages;
-        item.packages = packages;
+        item.paquetes = packages;
     });
 
     res.status(200).json({ data: req.neighbourhood });
