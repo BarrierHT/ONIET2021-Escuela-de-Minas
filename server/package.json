@@ -1,0 +1,25 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./src/app.js"
+  },
+  "devDependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.13"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-mongo": "^4.6.0",
+    "cookie-parser": "^1.4.5",
+    "csurf": "^1.11.0",
+    "csvjson": "^5.1.0",
+    "dotenv": "^10.0.0",
+    "express-session": "^1.17.2",
+    "helmet": "^4.6.0",
+    "mongoose": "^6.0.8",
+    "morgan": "^1.10.0"
+  }
+}
