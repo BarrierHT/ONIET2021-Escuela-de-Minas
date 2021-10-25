@@ -9,6 +9,7 @@ export interface UserPayload {
 }
 
 export interface Barrios {
+  id_renabap: string;
   nombre_barrio: string;
   cantidad_familias_estimado: number;
   paquetes: number;

@@ -54,13 +54,19 @@ export async function logOut(): Promise<void> {
 }
 
 export async function getBarrios(
-  provincia_id: string,
-  departamento_id: string,
-  localidad: string,
+  provincia_id?: string,
+  departamento_id?: string,
+  localidad?: string,
   page = 0
-): Promise<[Barrios] | null> {
+): Promise<Barrios[] | null> {
+  const params = new URLSearchParams();
+  provincia_id && params.set('provincia', provincia_id);
+  departamento_id && params.set('departamento', departamento_id);
+  localidad && params.set('localidad', localidad);
+  params.set('page', String(page));
+
   const result = (await fetch(
-    `http://${apiHost}/api/barrios?provincia=${provincia_id}&departamento=${departamento_id}&localidad=${localidad}?page=${page}`,
+    `http://${apiHost}/api/barrio/barrios?${String(params)}`,
     {
       ...defaultOptions(),
       method: 'GET',
