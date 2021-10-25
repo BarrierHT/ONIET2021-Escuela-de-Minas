@@ -1,5 +1,6 @@
 import { useUserController } from '@lib/user-state';
 import { AppBar, Button, Toolbar, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 import React from 'react';
 import UserPopover from './UserPopover';
 
@@ -16,13 +17,21 @@ const MyAppBar: React.FC = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          COVID-19 App
+        <Typography
+          variant="h6"
+          sx={{ flexGrow: 1, textDecoration: 'none' }}
+          component={RouterLink}
+          to="/"
+          color="inherit"
+        >
+          Barrios
         </Typography>
         {user !== null ? (
           <UserPopover user={user} handleLogOut={handleLogOut} />
         ) : (
-          <Button>Log In</Button>
+          <Button component={RouterLink} to="/logIn">
+            Iniciar sesión
+          </Button>
         )}
       </Toolbar>
     </AppBar>

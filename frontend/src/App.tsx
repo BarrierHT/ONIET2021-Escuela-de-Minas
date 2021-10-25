@@ -7,34 +7,26 @@ import {
   ThemeProvider,
 } from '@mui/material';
 import theme from '@lib/theme';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import MyAppBar from '@lib/components/MyAppBar';
-import { useUserController } from '@lib/user-state';
 import LogIn from '@lib/components/LogIn';
 import Dashboard from '@lib/components/Dashboard';
 
 const App: React.FC = () => {
-  const userController = useUserController();
-
-  const MainView: React.FC = () => {
-    if (userController.current === undefined) {
-      return (
-        <Container>
-          <Box sx={{ display: 'flex', justifyContent: 'center', margin: 3 }}>
-            <CircularProgress />
-          </Box>
-        </Container>
-      );
-    } else if (userController.current === null) {
-      return <LogIn />;
-    }
-    return <Dashboard />;
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <MyAppBar />
-      <MainView />
+      <Router>
+        <MyAppBar />
+        <Switch>
+          <Route path="/logIn">
+            <LogIn />
+          </Route>
+          <Route path="/">
+            <Dashboard />
+          </Route>
+        </Switch>
+      </Router>
     </ThemeProvider>
   );
 };
