@@ -181,8 +181,6 @@ exports.postStatistic = async (req, res, next) => {
 exports.postListedNeighborhood = async (req, res, next) => {
     const { nBarrios } = req.body;
 
-    // console.log(nBarrios);
-
     const result = await Neighborhood.find().then(
         neighbourhood => neighbourhood
     );
@@ -206,6 +204,10 @@ exports.postListedNeighborhood = async (req, res, next) => {
         ).packages;
         item.paquetes = packages;
     });
+
+    req.neighbourhood.filter(
+        item => item.id_renabap == resultFiltered.barrioId
+    );
 
     res.status(200).json({ data: req.neighbourhood });
 };
