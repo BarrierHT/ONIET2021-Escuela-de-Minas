@@ -1,8 +1,8 @@
-import { ApiResult, User, UserPayload } from '@lib/payloads';
+import { ApiResult, User, UserPayload , Barrios , Barrio  , Estadistica} from '@lib/payloads';
 import Cookies from 'js-cookie';
 
 const apiHost = import.meta.env.PROD ? window.location.host : 'localhost:5000';
-// FIXME: Make CSRF work
+
 const getCSRFToken = (): string => Cookies.get('XSRF-TOKEN') ?? '';
 
 const defaultOptions: () => RequestInit = () => ({
@@ -26,6 +26,7 @@ export async function getUser(): Promise<User | null> {
   return result.data;
 }
 
+
 export async function logIn(email: string, password: string): Promise<User> {
   const result = (await fetch(`http://${apiHost}/api/logIn`, {
     ...defaultOptions(),
@@ -44,4 +45,75 @@ export async function logOut(): Promise<void> {
     defaultOptions()
   ).then((v) => v.json())) as ApiResult<undefined>;
   if ('error' in result) throw result.error;
+}
+
+
+
+
+export async function getBarrios(provincia_id : string ,
+                                 departamento_id: string ,
+                                 localidad: string ,
+                                 page: string = 0 ): Promise<[Barrios] | null> =>  {
+
+  const result = (await fetch(
+    `http://${apiHost}/api/barrios?provincia=${provincia_id}&departamento=${departamento_id}&localidad=${localidad}?page=${page}`,
+    defaultOptions()
+  ).then((v) => v.json())) as ApiResult<[Barrios]>;
+
+  if('error' in result) throw result.error;
+
+  return result.data;
+}
+
+
+export async function  getBarrio(barrio_id: string): Promise<Barrio> => {
+
+  const result = (await fetch(`http://${apiHost}/api/barrio/${barrio_id}`,
+                               defaultOptions())
+    .then((v) => v.json())) as ApiResult<Barrio>;
+
+  if('error' in result) throw result.error;
+
+  return result.data;
+
+}
+
+
+
+
+export async function postPaquetes(paquetes: string , barrio_id: string): Promise<void> => {
+
+  const result = (await fetch(`http://${apiHost}/api/paquete/${barrio_id}`,
+                               defaultOptions())
+    .then((v) => v.json())) as ApiResult<undefined>;
+
+  if('error' in result) throw result.error;
+}
+
+
+
+
+
+export async function generarEstadistica(cod_provincia: string , cod_departamento: string , cod_localidad: string): Promise<Estadistica> => {
+
+  const result = (await fetch(`http://${apiHost}/api/generarEstadistica`,
+                               defaultOptions())
+    .then((v) => v.json())) as ApiResult<Estadistica>;
+
+  if('error' in result) throw result.error;
+
+  return result.data;
+
+}
+
+
+
+export async function listarBarrios(): Promise<Barrio>  => {
+  const result = (await fetch(`http://${apiHost}/api/nBarrios`,
+                               defaultOptions())
+    .then((v) => v.json())) as ApiResult<Barrio>;
+
+  if('error' in result) throw result.error;
+
+  return result.data;
 }
