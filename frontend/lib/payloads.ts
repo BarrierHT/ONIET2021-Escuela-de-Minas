@@ -15,13 +15,17 @@ export interface Barrios {
 }
 
 export interface Estadistica {
-  familias:  number;
+  familias: number;
   paquetes: number;
 }
 
 export type User = UserPayload;
 
-export type Barrio = Barrios & {acceso_electricidad: string, acceso_cloaca: string,  acceso_agua: string};
+export type Barrio = Barrios & {
+  acceso_electricidad: string;
+  acceso_cloaca: string;
+  acceso_agua: string;
+};
 
 export type ApiError = Record<string, unknown> | string;
 
